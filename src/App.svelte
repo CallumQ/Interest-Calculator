@@ -17,7 +17,8 @@
 				deposit: initial_sum,
 				deposit_total: initial_sum,
 				interest: 0,
-				running_interest: 0
+				interest_total: 0,
+				cumulative_total: 0
 		});
 
 		let running_total = initial_sum;
@@ -33,7 +34,8 @@
 				deposit: Math.round((annual_deposit + Number.EPSILON) * 100) / 100,
 				deposit_total: Math.round((deposit_total + Number.EPSILON) * 100) / 100,
 				interest: Math.round((annual_interest + Number.EPSILON) * 100) / 100,
-				interest_total: Math.round((running_interest + Number.EPSILON) * 100) / 100
+				interest_total: Math.round((running_interest + Number.EPSILON) * 100) / 100,
+				cumulative_total: Math.round((running_interest + deposit_total + Number.EPSILON) * 100) / 100
 			});
 		}
 		console.log(computed_years_array);
@@ -118,6 +120,35 @@
 			{#if total_sum}
 				<h2> Result</h2>
 				<p>Total value after {number_of_years} years: {currency_symbol + total_sum}</p>
+
+
+				<table class="table">
+					<thead>
+					  <tr>
+						<th scope="col">Year</th>
+						<th scope="col">Deposits</th>
+						<th scope="col">Interest</th>
+						<th scope="col">Cumulative Deposits</th>
+						<th scope="col">Cumulative Interest</th>
+						<th scope="col">Cumulative Total</th>
+
+					  </tr>
+					</thead>
+					<tbody>
+						{#each computed_years_array as year, i}
+						<tr>
+							<td >{i}</td>
+							<td>{currency_symbol + year.deposit}</td>
+							<td>{currency_symbol + year.interest}</td>
+							<td>{currency_symbol + year.deposit_total}</td>
+							<td>{currency_symbol + year.interest_total}</td>
+							<td>{currency_symbol + year.cumulative_total}</td>
+						  </tr>
+						{/each}
+
+					</tbody>
+				  </table>
+
 			{/if}
 		  </div>
 		</div>
