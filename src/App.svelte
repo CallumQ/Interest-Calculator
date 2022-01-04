@@ -1,18 +1,42 @@
 <script>
-	let initial_sum = 0;
-	let interest_rate = 1;
-	let number_of_years = 1;
-	let annual_deposit = 0;
+	let initial_sum = 10000;
+	let interest_rate = 7;
+	let number_of_years = 10;
+	let annual_deposit = 5000;
+
 	let currency_symbol = "$";
+
 	let total_sum = 0;
+	let computed_years_array;
 
 	function CalculateTotal() {
+		let deposit_total = initial_sum;
+
+		computed_years_array = [];
+		computed_years_array.push({
+				deposit: initial_sum,
+				deposit_total: initial_sum,
+				interest: 0,
+				running_interest: 0
+		});
+
 		let running_total = initial_sum;
-
+		let running_interest = 0;
 		for(let i = 0; i < number_of_years; i++) {
-			running_total = running_total + annual_deposit * (interest_rate / 100 + 1);
-		}
+			let annual_interest = running_total * (interest_rate / 100);
+			running_interest += annual_interest;
 
+			running_total += annual_interest + annual_deposit;
+			deposit_total += annual_deposit;
+
+			computed_years_array.push({
+				deposit: Math.round((annual_deposit + Number.EPSILON) * 100) / 100,
+				deposit_total: Math.round((deposit_total + Number.EPSILON) * 100) / 100,
+				interest: Math.round((annual_interest + Number.EPSILON) * 100) / 100,
+				interest_total: Math.round((running_interest + Number.EPSILON) * 100) / 100
+			});
+		}
+		console.log(computed_years_array);
 		total_sum = Math.round((running_total + Number.EPSILON) * 100) / 100
 	}
 
